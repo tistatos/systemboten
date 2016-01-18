@@ -5,15 +5,14 @@ var Twit = require('twit')
   , http = require('http')
   , parser = require('./parser')
 ;
-
+/*
 if(getenv('NODE_ENV' === 'development')) {
-  console.log("DEV");
   var devEnv = require('./env.json');
   _.forEach(devEnv, function(value, key) {
     process.env[key] = value;
   });
 }
-
+*/
 
 var dayNames = [ 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
