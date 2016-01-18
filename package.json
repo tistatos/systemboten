@@ -1,0 +1,27 @@
+{
+  "name": "systemboten",
+  "version": "1.0.0",
+  "description": "Boten som varnar dig nar systembolagets oppettider avviker",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "4.1.x",
+    "npm": "3.3.x"
+  },
+  "keywords": [
+    "twitter",
+    "bot"
+  ],
+  "author": "Erik Sandrén",
+  "license": "MIT",
+  "dependencies": {
+    "getenv": "^0.6.0",
+    "twit": "^2.1.1",
+    "underscore": "^1.8.3",
+    "xml2js": "^0.4.16"
+  }
+}
+
