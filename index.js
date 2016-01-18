@@ -132,6 +132,10 @@ var parseData = function(data) {
         console.log(tweetText)
       }
     }
+    else {
+        tweetText = "Systemet är öppet imorgon";
+        T.post('statuses/update', { status: tweetText }, function() {});
+    }
   }
 }
 
