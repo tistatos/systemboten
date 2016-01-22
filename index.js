@@ -135,6 +135,10 @@ var parseData = function(data) {
         tweetText = "Systemet är öppet imorgon";
         T.post('statuses/update', { status: tweetText }, function() {});
     }
+    else if(today.getDay() == 6) {
+        tweetText = "Imorgon är det söndag. Systemet är stängt på söndagar";
+        T.post('statuses/update', { status: tweetText }, function() {});
+    }
   }
 }
 
