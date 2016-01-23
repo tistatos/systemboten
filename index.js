@@ -16,12 +16,12 @@ if(getenv('NODE_ENV' === 'development')) {
 
 var dayNames = [ 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
-var T = new Twit({
-    consumer_key: getenv('CONSUMER_KEY'),
-    consumer_secret: getenv('CONSUMER_SECRET'),
-    access_token: getenv('ACCESS_TOKEN'),
-    access_token_secret: getenv('ACCESS_TOKEN_SECRET')
-});
+//var T = new Twit({
+    //consumer_key: getenv('CONSUMER_KEY'),
+    //consumer_secret: getenv('CONSUMER_SECRET'),
+    //access_token: getenv('ACCESS_TOKEN'),
+    //access_token_secret: getenv('ACCESS_TOKEN_SECRET')
+//});
 
 var options = {
   host: "www.systembolaget.se",
@@ -128,15 +128,14 @@ var parseData = function(data) {
       if(same && firstAnom-1 == today.getDay()) {
         tweetText = "OBS! OBS! OBS! OBS! Gå till systemet idag ty imorgon är det stängt! OBS! OBS! OBS! OBS!";
         T.post('statuses/update', { status: tweetText }, function() {});
-        console.log(tweetText)
       }
-    }
-    else if(anomalies.length == 0) {
-        tweetText = "Systemet är öppet imorgon";
-        T.post('statuses/update', { status: tweetText }, function() {});
     }
     else if(today.getDay() == 6) {
         tweetText = "Imorgon är det söndag. Systemet är stängt på söndagar";
+        T.post('statuses/update', { status: tweetText }, function() {});
+    }
+    else if(anomalies.length == 0) {
+        tweetText = "Systemet är öppet imorgon";
         T.post('statuses/update', { status: tweetText }, function() {});
     }
   }
