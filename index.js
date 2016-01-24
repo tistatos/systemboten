@@ -16,12 +16,12 @@ if(getenv('NODE_ENV' === 'development')) {
 
 var dayNames = [ 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
-//var T = new Twit({
-    //consumer_key: getenv('CONSUMER_KEY'),
-    //consumer_secret: getenv('CONSUMER_SECRET'),
-    //access_token: getenv('ACCESS_TOKEN'),
-    //access_token_secret: getenv('ACCESS_TOKEN_SECRET')
-//});
+var T = new Twit({
+    consumer_key: getenv('CONSUMER_KEY'),
+    consumer_secret: getenv('CONSUMER_SECRET'),
+    access_token: getenv('ACCESS_TOKEN'),
+    access_token_secret: getenv('ACCESS_TOKEN_SECRET')
+});
 
 var options = {
   host: "www.systembolaget.se",
