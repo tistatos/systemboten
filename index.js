@@ -66,7 +66,7 @@ var parseData = function(data) {
             }
             else {
               if(closes-opens == 0) {
-                console.log("Stängd dag!");
+                console.log("Stängd dag! " + dayNames[day]);
                 anomalies.push(day);
               }
             }
@@ -101,15 +101,17 @@ var parseData = function(data) {
         console.log(tweetText)
       }
       else{
-        tweetText += "stängt under vissa dagar";
+        tweetText += "stängt under vissa dagar. ";
+        tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
         T.post('statuses/update', { status: tweetText }, function() {});
         console.log(tweetText)
       }
     }
     else{
       //stores are closed more or less than one day in the week
-      tweetText += "stängt på vissa ställe på vissa dagar";
-      T.post('statuses/update', { status: tweetText }, function() {});
+      tweetText += "stängt på vissa ställe på vissa dagar. ";
+      tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
+      //T.post('statuses/update', { status: tweetText }, function() {});
       console.log(tweetText)
     }
   }
@@ -137,6 +139,11 @@ var parseData = function(data) {
     else if(anomalies.length == 0) {
         tweetText = "Systemet är öppet imorgon";
         T.post('statuses/update', { status: tweetText }, function() {});
+    }
+    else {
+      tweetText = "Systemet är stängt på vissa ställen imorgon. ";
+      tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
+      T.post('statuses/update', { status: tweetText }, function() {});
     }
   }
 }
