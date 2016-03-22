@@ -15,7 +15,6 @@ if(getenv('NODE_ENV' === 'development')) {
 */
 
 var dayNames = [ 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-
 var T = new Twit({
     consumer_key: getenv('CONSUMER_KEY'),
     consumer_secret: getenv('CONSUMER_SECRET'),
@@ -66,7 +65,8 @@ var parseData = function(data) {
             }
             else {
               if(closes-opens == 0) {
-                console.log("Stängd dag! " + dayNames[day]);
+                if(day == 3)
+                  console.log("Stängd dag! " + dayNames[day]);
                 anomalies.push(day);
               }
             }
@@ -82,8 +82,8 @@ var parseData = function(data) {
     var tweetText = "Trevlig måndag! Denna vecka är Systemet ";
     if(anomalies.length == 0) {
       tweetText += "öppet Mån-Lörd";
-      T.post('statuses/update', { status: tweetText }, function() {});
       console.log(tweetText)
+      T.post('statuses/update', { status: tweetText }, function() {});
     }
     else if(anomalies.length == numberOfStores) {
       //All stores are closed one day in the week
@@ -97,22 +97,22 @@ var parseData = function(data) {
       }
       if(same) {
         tweetText += "stängt på " + dayNames[firstAnom];
-        T.post('statuses/update', { status: tweetText }, function() {});
         console.log(tweetText)
+        T.post('statuses/update', { status: tweetText }, function() {});
       }
       else{
         tweetText += "stängt under vissa dagar. ";
         tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
-        T.post('statuses/update', { status: tweetText }, function() {});
         console.log(tweetText)
+        T.post('statuses/update', { status: tweetText }, function() {});
       }
     }
     else{
       //stores are closed more or less than one day in the week
       tweetText += "stängt på vissa ställe på vissa dagar. ";
       tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
-      //T.post('statuses/update', { status: tweetText }, function() {});
       console.log(tweetText)
+      T.post('statuses/update', { status: tweetText }, function() {});
     }
   }
   else {
@@ -129,21 +129,28 @@ var parseData = function(data) {
       }
       if(same && firstAnom-1 == today.getDay()) {
         tweetText = "OBS! OBS! OBS! OBS! Gå till systemet idag ty imorgon är det stängt! OBS! OBS! OBS! OBS!";
+        console.log(tweetText);
         T.post('statuses/update', { status: tweetText }, function() {});
       }
     }
     else if(today.getDay() == 6) {
         tweetText = "Imorgon är det söndag. Systemet är stängt på söndagar";
-        T.post('statuses/update', { status: tweetText }, function() {});
-    }
-    else if(anomalies.length == 0) {
-        tweetText = "Systemet är öppet imorgon";
+        console.log(tweetText);
         T.post('statuses/update', { status: tweetText }, function() {});
     }
     else {
-      tweetText = "Systemet är stängt på vissa ställen imorgon. ";
-      tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
-      T.post('statuses/update', { status: tweetText }, function() {});
+      var tomorrow = anomalies.filter( function(value) { return (value == today.getDay()+1);})
+      if(tomorrow.length == 0) {
+        tweetText = "Systemet är öppet imorgon";
+        console.log(tweetText);
+        T.post('statuses/update', { status: tweetText }, function() {});
+      }
+      else {
+        tweetText = "Systemet är stängt på vissa ställen imorgon. ";
+        tweetText += "Ta reda på specifika öppettider här: https://www.systembolaget.se/butiker-ombud/"
+        console.log(tweetText);
+        T.post('statuses/update', { status: tweetText }, function() {});
+      }
     }
   }
 }
