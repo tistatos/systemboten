@@ -1,7 +1,7 @@
 'use strict';
 
 exports.parseStore = function(data) {
-  var days = data.split(/;;;[-0];/g);
+  var days = data.split(/;;;[^;]*;/g);
   days = days.slice(0,7);
   var openingHours = []
   for(var i = 0; i < 7; i++) {

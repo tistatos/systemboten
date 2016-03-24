@@ -5,14 +5,14 @@ var Twit = require('twit')
   , http = require('http')
   , parser = require('./parser')
 ;
-/*
-if(getenv('NODE_ENV' === 'development')) {
-  var devEnv = require('./env.json');
-  _.forEach(devEnv, function(value, key) {
-    process.env[key] = value;
-  });
-}
-*/
+
+//if(getenv('NODE_ENV' === 'development')) {
+  //var devEnv = require('./env.json');
+  //_.forEach(devEnv, function(value, key) {
+    //process.env[key] = value;
+  //});
+//}
+
 
 var dayNames = [ 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 var T = new Twit({
@@ -21,6 +21,9 @@ var T = new Twit({
     access_token: getenv('ACCESS_TOKEN'),
     access_token_secret: getenv('ACCESS_TOKEN_SECRET')
 });
+
+//T = undefined;
+
 
 var options = {
   host: "www.systembolaget.se",
@@ -55,6 +58,8 @@ var parseData = function(data) {
       if(stuff.Typ[0] === 'Butik') {
         numberOfStores++;
         var hours = parser.parseStore(stuff.Oppettider[0]);
+        if(hours.length == 0)
+          console.log("no data!");
         for(var i = 0; i < 7; i++) {
             var day = hours[i].day.getDay();
             var opens = hours[i].from.split(":")[0];
@@ -65,8 +70,6 @@ var parseData = function(data) {
             }
             else {
               if(closes-opens == 0) {
-                if(day == 3)
-                  console.log("Stängd dag! " + dayNames[day]);
                 anomalies.push(day);
               }
             }
@@ -117,21 +120,12 @@ var parseData = function(data) {
   }
   else {
     console.log("Not monday: only warn if its closed tomorrow");
-    if(anomalies.length == numberOfStores) {
-      //All stores are closed one day in the week
-      var firstAnom = anomalies[0];
-      var same = true;
-      for(var i = 0; i < anomalies.length; i++) {
-        if(firstAnom != anomalies[i]) {
-          same = false;
-          break;
-        }
-      }
-      if(same && firstAnom-1 == today.getDay()) {
+    var tomorrow = anomalies.filter( function(value) { return (value == today.getDay()+1);})
+
+    if(tomorrow.length >= numberOfStores-2) {
         tweetText = "OBS! OBS! OBS! OBS! Gå till systemet idag ty imorgon är det stängt! OBS! OBS! OBS! OBS!";
         console.log(tweetText);
         T.post('statuses/update', { status: tweetText }, function() {});
-      }
     }
     else if(today.getDay() == 6) {
         tweetText = "Imorgon är det söndag. Systemet är stängt på söndagar";
