@@ -25,7 +25,7 @@ var T = new Twit({
 });
 
 
-if(getenv('NODE_ENV' === 'development')) {
+if(getenv('NODE_ENV') === 'development') {
 	//if were developing - dont tweet!
 	T = undefined;
 }
