@@ -1,8 +1,7 @@
-# Systemboten
-![](https://pbs.twimg.com/profile_images/707878773522350080/KOMXeGvR_400x400.jpg)
-
+# SystemBoten
 Boten som skall varna dig när systembolagets öppettider avviker det vanliga.
-
+![](https://pbs.twimg.com/profile_images/707878773522350080/KOMXeGvR_400x400.jpg)
+### [@systemBoten](http://www.twitter.com/systemboten)
 
 KBK:
 ```
