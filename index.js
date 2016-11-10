@@ -2,7 +2,7 @@ var Twit = require('twit')
   , getenv = require('getenv')
   , _ = require('underscore')
   , parseString = require('xml2js').parseString
-  , http = require('http')
+  , request = require('request')
   , parser = require('./parser')
 ;
 
@@ -26,28 +26,37 @@ var T = new Twit({
 
 
 var options = {
-  host: "www.systembolaget.se",
-  path: "/api/assortment/stores/xml",
-  port:80,
+  url: "http://www.systembolaget.se/api/assortment/stores/xml/",
+  method:"GET",
+  encoding: "utf8"
 };
 
-var req = http.get(options, function(res) {
-  var output = '';
-  console.log(options.host + ':' + res.statusCode);
-  res.setEncoding('utf8');
-  res.on('data', function (chunk) {
-    output += chunk;
-  });
-  res.on('end', function() {
+var req = request(options, function(error, response, body) {
+  if(!error) {
+    console.log(response.statusCode);
+    output = response.body;
     parseString(output, function (err, result) {
      parseData(result);
     });
-  });
-  req.on('error', function(err) {
-    res.send('error: ' + err.message);
-  });
+  }
+  else {
+    console.log(error);
+  }
 
-  req.end();
+  //res.setEncoding('utf8');
+  //res.on('data', function (chunk) {
+    //output += chunk;
+  //});
+  //res.on('end', function() {
+    //parseString(output, function (err, result) {
+     //parseData(result);
+    //});
+  //});
+  //req.on('error', function(err) {
+    //res.send('error: ' + err.message);
+  //});
+
+  //req.end();
 });
 
 
@@ -148,4 +157,3 @@ var parseData = function(data) {
     }
   }
 }
-

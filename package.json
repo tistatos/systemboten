@@ -19,9 +19,9 @@
   "license": "MIT",
   "dependencies": {
     "getenv": "^0.6.0",
+    "request": "^2.78.0",
     "twit": "^2.1.1",
     "underscore": "^1.8.3",
     "xml2js": "^0.4.16"
   }
 }
-
