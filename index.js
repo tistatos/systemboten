@@ -8,6 +8,7 @@ var Twit = require('twit')
 
 if(getenv('NODE_ENV' === 'development')) {
   console.log("dev!");
+  console.log(getenv('NODE_ENV');
 	var devEnv = require('./env.json');
 	_.forEach(devEnv, function(value, key) {
 		process.env[key] = value;
