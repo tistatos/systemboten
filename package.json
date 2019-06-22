@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": "8.10.x",
-    "npm": "3.5.x"
+    "npm": "5.6.x"
   },
   "keywords": [
     "twitter",
