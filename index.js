@@ -6,7 +6,7 @@ var Twit = require('twit')
 
 var twitterAPI = undefined
 
-if(getenv('NODE_ENV' === 'development')) {
+if(getenv('NODE_ENV') === 'development') {
 	var devEnv = require('./env.json')
 	_.forEach(devEnv, function(value, key) {
 		process.env[key] = value
