@@ -95,6 +95,10 @@ class MockTwitterAPI {
 	post(tweetText) {
 		this.lastTweet = tweetText
 	}
+
+	dm(tweetText) {
+		this.lastTweet = "DM user: " +tweetText
+	}
 }
 
 describe('Systemboten', function() {
@@ -112,6 +116,14 @@ describe('Systemboten', function() {
 
 
 	describe('Single days', function() {
+		it('should not tweet on a regular', function() {
+			mockParser.startDate = new Date("2019-06-21T00:00:00Z") //friday
+			systemboten.today = mockParser.startDate
+			systemboten.determineStoreStatus().then(function() {
+				expect(mockTwitter.lastTweet).equal(
+				"DM user: Nothing to do today")
+			})
+		}),
 		it('should tweet that tomorrow will be closed', function() {
 			mockParser.startDate = new Date("2019-06-21T00:00:00Z") //friday
 			mockParser.addDayClosed(1)
@@ -154,7 +166,7 @@ describe('Systemboten', function() {
 			systemboten.today = mockParser.startDate
 			systemboten.determineStoreStatus().then(function() {
 				expect(mockTwitter.lastTweet).equal(
-				"")
+				"DM user: Store is closed, nothing to do today")
 			})
 		}),
 
@@ -304,6 +316,16 @@ describe('Systemboten', function() {
 	})
 
 	describe('Week Summaries', function() {
+		it('should not tweet on regular week', function(done) {
+			mockParser.startDate = new Date("2019-06-17T00:00:00Z") //monday
+			var systemboten = new Systemboten(mockTwitter, mockParser)
+			systemboten.today = mockParser.startDate
+			systemboten.determineStoreStatus().then(function() {
+				expect(mockTwitter.lastTweet).equal(
+				"DM user: Nothing special about this week")
+				done()
+			})
+		})
 		it('should tweet on monday if friday is closed', function(done) {
 			mockParser.startDate = new Date("2019-06-17T00:00:00Z") //monday
 			mockParser.addDayClosed(4)
@@ -322,7 +344,8 @@ describe('Systemboten', function() {
 			var systemboten = new Systemboten(mockTwitter, mockParser)
 			systemboten.today = mockParser.startDate
 			systemboten.determineStoreStatus().then(function() {
-				expect(mockTwitter.lastTweet).equal("")
+				expect(mockTwitter.lastTweet).equal(
+				"DM user: Nothing special about this week")
 				done()
 			})
 		})
@@ -371,7 +394,8 @@ describe('Systemboten', function() {
 			var systemboten = new Systemboten(mockTwitter, mockParser)
 			systemboten.today = mockParser.startDate
 			systemboten.determineStoreStatus().then(function() {
-				expect(mockTwitter.lastTweet).equal("")
+				expect(mockTwitter.lastTweet).equal(
+				"DM user: Store is closed, nothing to do today")
 				done()
 			})
 		})
