@@ -61,6 +61,7 @@ exports.Systemboten = class Systemboten {
 		var parsing = this.parser.storeData.then(function(data) {
 
 			if (boten.getAllStoresAreClosed(data, 0)) {
+				boten.tweetAPI.dm("Store is closed, nothing to do today")
 				return //dont tweet if it is closed today, the bot should ahve already warned about this!
 			}
 			var week = boten.getWeekStatus(data)
@@ -68,6 +69,9 @@ exports.Systemboten = class Systemboten {
 				//Potentially tweet a summary of the week
 				if (week.daysFullyClosed.length > 0 || week.daysPartiallyClosed.length > 0) {
 					boten.tweetWeekSummary(week.daysFullyClosed, week.daysPartiallyClosed)
+				}
+				else {
+					boten.tweetAPI.dm("Nothing special about this week")
 				}
 			}
 			else {
@@ -122,6 +126,9 @@ exports.Systemboten = class Systemboten {
 						//more than one day partially closed
 						boten.tweetMultiPartiallyClosedAnomaly(daysPartiallyClosed)
 					}
+				}
+				else {
+					boten.tweetAPI.dm("Nothing to do today")
 				}
 			}
 		})

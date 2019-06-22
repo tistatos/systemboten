@@ -6,7 +6,7 @@ var Twit = require('twit')
 
 var twitterAPI = undefined
 
-if(getenv('NODE_ENV') === 'development') {
+if(getenv('NODE_ENV', 'development') === 'development') {
 	var devEnv = require('./env.json')
 	_.forEach(devEnv, function(value, key) {
 		process.env[key] = value
@@ -17,14 +17,13 @@ if(getenv('NODE_ENV') === 'development') {
 			console.log("Tweeting: \"" + tweetText + "\"")
 		},
 
-		dm: function(tweetText, userId) {
-			console.log("DMing user:" + userId + " with text \"" + tweetText + "\"")
+		dm: function(tweetText) {
+			console.log("DMing user: with text \"" + tweetText + "\"")
 		}
 	}
 }
 else {
   twitterAPI = {
-
 		T: new Twit({
 				consumer_key: getenv('CONSUMER_KEY'),
 				consumer_secret: getenv('CONSUMER_SECRET'),
@@ -36,13 +35,13 @@ else {
 			this.T.post('statuses/update', { status: tweetText }, function() {})
 		},
 
-		dm: function(tweetText, userID) {
+		dm: function(tweetText) {
 			this.T.post('direct_messages/events/new', {
 				event: {
 					type: "message_create",
 					message_create: {
 						target: {
-							recipient_id: userID
+							recipient_id: getenv('DEV_TWITTER_ID')
 						},
 						message_data: {
 							text: tweetText
