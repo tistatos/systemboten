@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "engines": {
     "node": "4.1.x",
@@ -20,8 +20,13 @@
   "dependencies": {
     "getenv": "^0.6.0",
     "request": "^2.78.0",
-    "twit": "^2.1.1",
+    "request-promise-native": "^1.0.7",
+    "twit": "^2.2.11",
     "underscore": "^1.8.3",
     "xml2js": "^0.4.16"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
   }
 }
