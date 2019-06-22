@@ -74,7 +74,7 @@ exports.Systemboten = class Systemboten {
 					boten.tweetAPI.dm("Nothing special about this week")
 				}
 			}
-			else {
+			else if (boten.today.getDay() != SUNDAY ) {
 				var daysAhead = 1
 				if (boten.getAllStoresAreClosed(data, daysAhead)) {
 					var daysInARowClosedFromToday = 1
@@ -131,6 +131,9 @@ exports.Systemboten = class Systemboten {
 					boten.tweetAPI.dm("Nothing to do today")
 				}
 			}
+				else {
+					boten.tweetAPI.dm("I dont tweet on sundays!")
+				}
 		})
 		return parsing
 	}

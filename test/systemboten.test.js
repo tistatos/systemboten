@@ -124,6 +124,7 @@ describe('Systemboten', function() {
 				"DM user: Nothing to do today")
 			})
 		}),
+
 		it('should tweet that tomorrow will be closed', function() {
 			mockParser.startDate = new Date("2019-06-21T00:00:00Z") //friday
 			mockParser.addDayClosed(1)
@@ -131,6 +132,16 @@ describe('Systemboten', function() {
 			systemboten.determineStoreStatus().then(function() {
 				expect(mockTwitter.lastTweet).equal(
 				"OBS! Gå till Systemet idag ty imorgon är det stängt! OBS!")
+			})
+		}),
+
+		it('Should not tweet on sundays', function() {
+			mockParser.startDate = new Date("2019-06-23T00:00:00Z") //sunday
+			mockParser.addDayClosed(1)
+			systemboten.today = mockParser.startDate
+			systemboten.determineStoreStatus().then(function() {
+				expect(mockTwitter.lastTweet).equal(
+				"DM user: I dont tweet on sundays!")
 			})
 		}),
 
