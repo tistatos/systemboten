@@ -1,13 +1,14 @@
 'use strict'
 var _ = require('underscore')
 
-const MONDAY = 1
+	const MONDAY = 1
 const SATURDAY = 6
 const SUNDAY = 0
 
 exports.Systemboten = class Systemboten {
 	constructor(twitterAPI, parser) {
 		this.tweetAPI = twitterAPI
+		this.tweetAPI.dm = () => {} // remove DM functionality but keep for tests
 		this.parser = parser
 		this.dayNames = [ 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag']
 		this.today = new Date()
@@ -33,6 +34,10 @@ exports.Systemboten = class Systemboten {
 
 	getStoresOpenOnDayCount(data, day) {
 		return _.filter(data, function(store) {
+			if (store.name == "Löttorpsvägen 39" && day == 1) {
+				//This store does not keep sunday in its list of open days
+				return false;
+			}
 			return store.hours[day].to - store.hours[day].from > 0
 		}).length
 	}
@@ -57,6 +62,7 @@ exports.Systemboten = class Systemboten {
 	}
 
 	determineStoreStatus() {
+
 		var boten = this
 		var parsing = this.parser.storeData.then(function(data) {
 
@@ -101,6 +107,9 @@ exports.Systemboten = class Systemboten {
 						//more than one day closed, not any partially following
 						boten.tweetMultiDayAnomaly(daysInARowClosedFromToday)
 					}
+					else {
+						boten.tweetAPI.dm("Tomorrow is Sunday but stores are open on Monday")
+					}
 				}
 				else if (boten.getStoresPartiallyClosed(data, daysAhead)) {
 					var daysPartiallyClosed = 1
@@ -131,9 +140,9 @@ exports.Systemboten = class Systemboten {
 					boten.tweetAPI.dm("Nothing to do today")
 				}
 			}
-				else {
-					boten.tweetAPI.dm("I dont tweet on sundays!")
-				}
+			else {
+				boten.tweetAPI.dm("I dont tweet on sundays!")
+			}
 		})
 		return parsing
 	}

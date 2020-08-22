@@ -49,7 +49,9 @@ else {
 					}
 				}
 			},
-			function() {})
+			function(e) {
+				console.log(e);
+			})
 		}
 	}
 }

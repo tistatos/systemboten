@@ -163,7 +163,7 @@ describe('Systemboten', function() {
 			systemboten.today = mockParser.startDate
 			systemboten.determineStoreStatus().then(function() {
 				expect(mockTwitter.lastTweet).equal(
-				"")
+				"DM user: Tomorrow is Sunday but stores are open on Monday")
 			})
 		})
 	})
